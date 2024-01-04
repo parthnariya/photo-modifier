@@ -1,0 +1,36 @@
+import HeaderStyle from "./Header.style";
+import ImageHandler from "./ImageHandler/ImageHandler";
+import RevisionHistory from "./RevisionHistory/RevisionHistory";
+import ZoomControls from "./ZoomControls/ZoomControls";
+
+const Header = () => {
+  return (
+    <HeaderStyle>
+      <div className="items">
+        <div className="item_groups">
+          <div className="item">
+            <RevisionHistory revision="undo" />
+          </div>
+          <div className="item">
+            <RevisionHistory revision="redo" />
+          </div>
+        </div>
+        <div className="item_groups">
+          <div className="item">
+            <ZoomControls />
+          </div>
+        </div>
+        <div className="item_groups">
+          <div className="item">
+            <ImageHandler type="upload" />
+          </div>
+          <div className="item">
+            <ImageHandler type="download" />
+          </div>
+        </div>
+      </div>
+    </HeaderStyle>
+  );
+};
+
+export default Header;
