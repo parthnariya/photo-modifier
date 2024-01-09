@@ -13,6 +13,7 @@ const ImageHandler = ({ type }: ImageHandlerType) => {
   const dispatch = useAppDispatch();
   const uploadImageHandler: MouseEventHandler = (e) => {
     e.preventDefault();
+    
     if (imageInputRef.current) {
       imageInputRef.current.click();
     }
