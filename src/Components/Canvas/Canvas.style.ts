@@ -13,5 +13,11 @@ const CanvasStyle = styled.div`
   overflow: auto;
   transition: all 600ms ease-in-out;
   transform: translateX(0);
+  .canvas-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 export default CanvasStyle;

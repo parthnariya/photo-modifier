@@ -1,30 +1,97 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import CanvasStyle from "./Canvas.style";
 import { RootState } from "../../store/store";
-import { useAppSelector } from "../../hooks/useAppDispatch";
+import { useAppDispatch, useAppSelector } from "../../hooks/useAppDispatch";
+import {
+  setCanvasDimensions,
+  setImageDimensions,
+  setScaleValue,
+} from "../../store/slices/ImageSlice/imageSlice";
+import { getScale } from "../../utils/getScale";
 
 const Canvas = () => {
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const { image } = useAppSelector((state: RootState) => state.image);
-  useEffect(() => {
-    if (canvasRef.current) {
-      const ctx = canvasRef.current.getContext("2d");
-      if (ctx && image) {
-        const img = new Image();
-        img.src = image;
-        img.onload = function () {
-          setWidth(img.width);
-          setHeight(img.height);
-          ctx.drawImage(img, 0, 0, width, height);
-        };
+  const canvasWrapperDivRef = useRef<HTMLDivElement | null>(null);
+
+  const {
+    image,
+    width,
+    height,
+    canvasContainerHeight,
+    canvasContainerWidth,
+    scaleValue,
+  } = useAppSelector((state: RootState) => state.image);
+
+  const dispatch = useAppDispatch();
+
+  const drawCanvas = useCallback(
+    (img: HTMLImageElement) => {
+      if (!width && canvasContainerWidth && canvasContainerHeight) {
+        console.log(
+          width,
+          img.width,
+          canvasContainerWidth,
+          img.height,
+          canvasContainerHeight
+        );
+
+        if (
+          img.width + 250 > canvasContainerWidth ||
+          img.height + 100 > canvasContainerHeight
+        ) {
+          const diffWidth = img.width + 250 - canvasContainerWidth;
+          const diffHeight = img.height + 100 - canvasContainerHeight;
+          console.log(getScale(diffWidth, diffHeight));
+          dispatch(
+            setScaleValue({ scaleValue: getScale(diffWidth, diffHeight) })
+          );
+        }
+        dispatch(setImageDimensions({ height: img.height, width: img.width }));
       }
+
+      if (canvasRef.current) {
+        const canvasNode = canvasRef.current;
+        const canvasCtx = canvasNode.getContext("2d");
+        if (canvasWrapperDivRef.current) {
+          dispatch(
+            setCanvasDimensions({
+              canvasContainerHeight: canvasWrapperDivRef.current.clientHeight,
+              canvasContainerWidth: canvasWrapperDivRef.current.clientWidth,
+            })
+          );
+        }
+        if (canvasCtx) {
+          canvasCtx.drawImage(img, 0, 0, img.width, img.height);
+        }
+      }
+    },
+    [width, canvasContainerWidth, canvasContainerHeight, dispatch]
+  );
+
+  useEffect(() => {
+    if (image) {
+      const img = new Image();
+      img.src = image;
+
+      img.onload = () => drawCanvas(img);
     }
-  }, [image, height, width]);
+  }, [image, drawCanvas]);
   return (
-    <CanvasStyle>
-      <canvas ref={canvasRef} width={width} height={height} />
+    <CanvasStyle ref={canvasWrapperDivRef}>
+      <div
+        className="canvas-container"
+        style={{
+          maxWidth: canvasContainerWidth || 500,
+          maxHeight: canvasContainerHeight || 500,
+        }}
+      >
+        <canvas
+          ref={canvasRef}
+          width={width || 500}
+          height={height || 500}
+          style={{ transform: `scale(${scaleValue / 100})` }}
+        />
+      </div>
     </CanvasStyle>
   );
 };
