@@ -23,15 +23,6 @@ const Canvas = () => {
   } = useAppSelector((state: RootState) => state.image);
 
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    if (canvasWrapperDivRef.current)
-      dispatch(
-        setCanvasDimensions({
-          canvasContainerHeight: canvasWrapperDivRef.current.clientHeight,
-          canvasContainerWidth: canvasWrapperDivRef.current.clientWidth,
-        })
-      );
-  }, [dispatch]);
 
   const drawCanvas = useCallback(
     (img: HTMLImageElement) => {
@@ -43,6 +34,7 @@ const Canvas = () => {
           img.height,
           canvasContainerHeight
         );
+
         if (
           img.width + 250 > canvasContainerWidth ||
           img.height + 100 > canvasContainerHeight
@@ -60,6 +52,14 @@ const Canvas = () => {
       if (canvasRef.current) {
         const canvasNode = canvasRef.current;
         const canvasCtx = canvasNode.getContext("2d");
+        if (canvasWrapperDivRef.current) {
+          dispatch(
+            setCanvasDimensions({
+              canvasContainerHeight: canvasWrapperDivRef.current.clientHeight,
+              canvasContainerWidth: canvasWrapperDivRef.current.clientWidth,
+            })
+          );
+        }
         if (canvasCtx) {
           canvasCtx.drawImage(img, 0, 0, img.width, img.height);
         }
@@ -77,16 +77,10 @@ const Canvas = () => {
     }
   }, [image, drawCanvas]);
   return (
-    <CanvasStyle
-      ref={canvasWrapperDivRef}
-      style={{
-        backgroundColor: "yellow",
-      }}
-    >
+    <CanvasStyle ref={canvasWrapperDivRef}>
       <div
         className="canvas-container"
         style={{
-          backgroundColor: "pink",
           maxWidth: canvasContainerWidth || 500,
           maxHeight: canvasContainerHeight || 500,
         }}
@@ -95,7 +89,7 @@ const Canvas = () => {
           ref={canvasRef}
           width={width || 500}
           height={height || 500}
-          style={{ transform: `scale(${scaleValue/100})` }}
+          style={{ transform: `scale(${scaleValue / 100})` }}
         />
       </div>
     </CanvasStyle>

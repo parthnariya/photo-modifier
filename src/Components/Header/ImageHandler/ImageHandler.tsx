@@ -1,8 +1,11 @@
 import { ChangeEventHandler, MouseEventHandler, useRef } from "react";
 import DownloadIcon from "../../../assets/icons/save.svg?react";
 import UploadIcon from "../../../assets/icons/upload.svg?react";
-import { useAppDispatch } from "../../../hooks/useAppDispatch";
-import { loadImage } from "../../../store/slices/ImageSlice/imageSlice";
+import { useAppDispatch, useAppSelector } from "../../../hooks/useAppDispatch";
+import {
+  loadImage,
+  resetCanvas,
+} from "../../../store/slices/ImageSlice/imageSlice";
 import { getBase64 } from "../../../utils/getBase64";
 type ImageHandlerType = {
   type: "download" | "upload";
@@ -10,10 +13,11 @@ type ImageHandlerType = {
 
 const ImageHandler = ({ type }: ImageHandlerType) => {
   const imageInputRef = useRef<HTMLInputElement>(null);
+  const { image } = useAppSelector((state) => state.image);
   const dispatch = useAppDispatch();
   const uploadImageHandler: MouseEventHandler = (e) => {
     e.preventDefault();
-    
+
     if (imageInputRef.current) {
       imageInputRef.current.click();
     }
@@ -22,8 +26,11 @@ const ImageHandler = ({ type }: ImageHandlerType) => {
     event
   ) => {
     if (event.target.files && event.target.files[0]) {
-      const temp = await getBase64(event.target.files[0]);
-      dispatch(loadImage(temp));
+      if (image) {
+        dispatch(resetCanvas());
+      }
+      const imageBase64 = await getBase64(event.target.files[0]);
+      dispatch(loadImage(imageBase64));
     }
   };
   return (
