@@ -10,7 +10,8 @@ const initialState: InitialStateImageSlice = {
   imageName: "",
   height: null,
   width: null,
-  scaleValue: 100,
+  scaleValue: 0,
+  zoomLevel: 1,
   canvasContainerWidth: null,
   canvasContainerHeight: null,
 };
@@ -49,6 +50,23 @@ const imageSlice = createSlice({
       state.scaleValue = payload.scaleValue;
     },
 
+    /* reducer to  increase zoomLevel */
+    increaseZoom: (state) => {
+      if (state.zoomLevel >= 2) {
+        return;
+      }
+      state.zoomLevel = +(state.zoomLevel + 0.1).toFixed(1);
+    },
+
+    /* reducer to decrease zoomLevel */
+
+    decreaseZoom: (state) => {
+      if (state.zoomLevel <= 0.5) {
+        return;
+      }
+      state.zoomLevel = +(state.zoomLevel - 0.1).toFixed(1);
+    },
+
     /* reducer to reset canvas */
     resetCanvas: () => initialState,
   },
@@ -59,5 +77,7 @@ export const {
   setCanvasDimensions,
   setScaleValue,
   resetCanvas,
+  increaseZoom,
+  decreaseZoom,
 } = imageSlice.actions;
 export default imageSlice.reducer;

@@ -1,9 +1,11 @@
+import { useAppSelector } from "../../hooks/useAppDispatch";
 import HeaderStyle from "./Header.style";
 import ImageHandler from "./ImageHandler/ImageHandler";
 import RevisionHistory from "./RevisionHistory/RevisionHistory";
 import ZoomControls from "./ZoomControls/ZoomControls";
 
 const Header = () => {
+  const { image } = useAppSelector((state) => state.image);
   return (
     <HeaderStyle>
       <div className="items">
@@ -17,7 +19,7 @@ const Header = () => {
         </div>
         <div className="item_groups">
           <div className="item">
-            <ZoomControls />
+            {image && <ZoomControls />}
           </div>
         </div>
         <div className="item_groups">

@@ -12,14 +12,13 @@ import { getScale } from "../../utils/getScale";
 const Canvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const canvasWrapperDivRef = useRef<HTMLDivElement | null>(null);
-
   const {
     image,
     width,
-    height,
     canvasContainerHeight,
     canvasContainerWidth,
     scaleValue,
+    zoomLevel,
   } = useAppSelector((state: RootState) => state.image);
 
   const dispatch = useAppDispatch();
@@ -27,24 +26,17 @@ const Canvas = () => {
   const drawCanvas = useCallback(
     (img: HTMLImageElement) => {
       if (!width && canvasContainerWidth && canvasContainerHeight) {
-        console.log(
-          width,
-          img.width,
-          canvasContainerWidth,
-          img.height,
-          canvasContainerHeight
-        );
-
         if (
           img.width + 250 > canvasContainerWidth ||
           img.height + 100 > canvasContainerHeight
         ) {
           const diffWidth = img.width + 250 - canvasContainerWidth;
           const diffHeight = img.height + 100 - canvasContainerHeight;
-          console.log(getScale(diffWidth, diffHeight));
           dispatch(
             setScaleValue({ scaleValue: getScale(diffWidth, diffHeight) })
           );
+        } else {
+          dispatch(setScaleValue({ scaleValue: 1 }));
         }
         dispatch(setImageDimensions({ height: img.height, width: img.width }));
       }
@@ -60,12 +52,28 @@ const Canvas = () => {
             })
           );
         }
+        canvasNode.width = img.width * (scaleValue * zoomLevel);
+        canvasNode.height = img.height * (scaleValue * zoomLevel);
+
         if (canvasCtx) {
-          canvasCtx.drawImage(img, 0, 0, img.width, img.height);
+          canvasCtx.drawImage(
+            img,
+            0,
+            0,
+            img.width * (scaleValue * zoomLevel),
+            img.height * (scaleValue * zoomLevel)
+          );
         }
       }
     },
-    [width, canvasContainerWidth, canvasContainerHeight, dispatch]
+    [
+      width,
+      canvasContainerWidth,
+      canvasContainerHeight,
+      scaleValue,
+      zoomLevel,
+      dispatch,
+    ]
   );
 
   useEffect(() => {
@@ -85,12 +93,7 @@ const Canvas = () => {
           maxHeight: canvasContainerHeight || 500,
         }}
       >
-        <canvas
-          ref={canvasRef}
-          width={width || 500}
-          height={height || 500}
-          style={{ transform: `scale(${scaleValue / 100})` }}
-        />
+        <canvas ref={canvasRef} />
       </div>
     </CanvasStyle>
   );
