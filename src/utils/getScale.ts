@@ -1,13 +1,13 @@
 const SCALES: Record<number, number> = {
-  3500: 15,
-  3000: 20,
-  2500: 25,
-  2000: 30,
-  1000: 40,
-  800: 50,
-  600: 60,
-  400: 70,
-  200: 80,
+  3500: 0.10,
+  3000: 0.15,
+  2500: 0.20,
+  2000: 0.25,
+  1000: 0.35,
+  800: 0.45,
+  600: 0.55,
+  400: 0.65,
+  200: 0.75,
 };
 
 export function getScale(diffWidth: number, diffHeight: number) {
@@ -24,5 +24,5 @@ export function getScale(diffWidth: number, diffHeight: number) {
   }
 
   // Default scale for very small differences.
-  return 95;
+  return 0.9;
 }

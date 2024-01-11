@@ -4,6 +4,7 @@ export type InitialStateImageSlice = {
   width: number | null;
   height: number | null;
   scaleValue: number;
+  zoomLevel: number;
   canvasContainerWidth: number | null;
   canvasContainerHeight: number | null;
 };
