@@ -1,13 +1,28 @@
 import SliderStyle from "./Slider.style";
-
-const Slider = () => {
+type SliderPropType = {
+  title: string;
+  min: number;
+  max: number;
+  step: number;
+  value: number;
+  // changeHandler: any;
+};
+const Slider = (props: SliderPropType) => {
   return (
     <SliderStyle>
       <div className="header">
-        <p className="title">Brightness</p>
-        <span className="value">100</span>
+        <p className="title">{props.title}</p>
+        <span className="value">{props.value}</span>
       </div>
-      <input type="range" min={-100} max={100} step={10} defaultValue={0} className="slider"/>
+      <input
+        type="range"
+        min={props.min}
+        max={props.max}
+        step={props.step}
+        value={props.value}
+        className="slider"
+        // onChange={props.changeHandler}
+      />
     </SliderStyle>
   );
 };
