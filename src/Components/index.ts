@@ -1,4 +1,5 @@
 import Header from "./Header/Header";
 import Sidebar from "./Sidebar/Sidebar";
 import Canvas from "./Canvas/Canvas";
-export { Header, Sidebar, Canvas };
+import Toolbar from "./Toolbar/Toolbar";
+export { Header, Sidebar, Canvas, Toolbar };

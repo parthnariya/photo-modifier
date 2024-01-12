@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const HeaderStyle = styled.nav`
+const HeaderStyle = styled.nav<[$showToolbar?: boolean]>`
   color: ${(props) => props.theme.primary};
   display: flex;
   align-items: center;
