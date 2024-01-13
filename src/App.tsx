@@ -6,10 +6,10 @@ function App() {
     <>
     <GlobalStyle />
       <AppStyle>
-        {/* <Header /> */}
+        <Header />
         <Sidebar />
         <Toolbar />
-        {/* <Canvas /> */}
+        <Canvas />
       </AppStyle>
     </>
   );

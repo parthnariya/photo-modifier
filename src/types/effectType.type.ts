@@ -1,4 +1,4 @@
-export const EffectType = {
+export const EffectType = Object.freeze({
   BRIGHTNESS: "Brightness",
   CONTRAST: "Contrast",
   SATURATION: "Saturation",
@@ -8,4 +8,4 @@ export const EffectType = {
   INVERT: "Invert",
   BLUR: "Blur",
   TINT: "Tint",
-};
+});

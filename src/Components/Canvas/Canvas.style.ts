@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const CanvasStyle = styled.div`
-  grid-column-start: 2;
+  /* grid-column-start: 2; */
   grid-row-start: 2;
   grid-column-end: 17;
   width: 100%;
