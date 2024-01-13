@@ -1,3 +1,4 @@
+import { ChangeEventHandler } from "react";
 import SliderStyle from "./Slider.style";
 type SliderPropType = {
   title: string;
@@ -5,9 +6,13 @@ type SliderPropType = {
   max: number;
   step: number;
   value: number;
-  // changeHandler: any;
+  onChangeHandler: (str: string, value: number) => void;
 };
 const Slider = (props: SliderPropType) => {
+  const changeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
+    console.log(e.target.value);
+    props.onChangeHandler(props.title, +e.target.value);
+  };
   return (
     <SliderStyle>
       <div className="header">
@@ -21,7 +26,7 @@ const Slider = (props: SliderPropType) => {
         step={props.step}
         value={props.value}
         className="slider"
-        // onChange={props.changeHandler}
+        onChange={changeHandler}
       />
     </SliderStyle>
   );
