@@ -94,6 +94,14 @@ const EffectToolbar = () => {
         onChangeHandler={onChangeHandler}
       />
       <Slider
+        title={EffectType.BLUR}
+        min={0}
+        max={100}
+        step={1}
+        value={effect.blur}
+        onChangeHandler={onChangeHandler}
+      />
+      {/* <Slider
         title={EffectType.PIXELATE}
         min={0}
         max={100}
@@ -118,21 +126,13 @@ const EffectToolbar = () => {
         onChangeHandler={onChangeHandler}
       />
       <Slider
-        title={EffectType.BLUR}
-        min={0}
-        max={100}
-        step={1}
-        value={effect.blur}
-        onChangeHandler={onChangeHandler}
-      />
-      <Slider
         title={EffectType.TINT}
         min={0}
         max={100}
         step={1}
         value={effect.tint}
         onChangeHandler={onChangeHandler}
-      />
+      /> */}
     </EffectToolbarStyle>
   );
 };

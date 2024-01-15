@@ -9,4 +9,3 @@ export type InitialStateEffectSlice = {
   blur: number;
   tint: number;
 };
-
