@@ -8,6 +8,7 @@ import {
   setScaleValue,
 } from "../../store/slices/ImageSlice/imageSlice";
 import { getScale } from "../../utils/getScale";
+import { generateFilterString } from "../../utils/generateFilterString";
 
 const Canvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -21,6 +22,8 @@ const Canvas = () => {
     zoomLevel,
   } = useAppSelector((state: RootState) => state.image);
   const { showToolbar } = useAppSelector((state) => state.toolbar);
+  const { blur, brightness, contrast, saturation, hueRotate, invert } =
+    useAppSelector((state) => state.effect);
   const dispatch = useAppDispatch();
 
   const drawCanvas = useCallback(
@@ -57,6 +60,14 @@ const Canvas = () => {
         canvasNode.height = img.height * (scaleValue * zoomLevel);
 
         if (canvasCtx) {
+          canvasCtx.filter = generateFilterString(
+            brightness,
+            blur,
+            contrast,
+            hueRotate,
+            invert,
+            saturation
+          );
           canvasCtx.drawImage(
             img,
             0,
@@ -74,6 +85,12 @@ const Canvas = () => {
       scaleValue,
       zoomLevel,
       dispatch,
+      blur,
+      contrast,
+      brightness,
+      hueRotate,
+      invert,
+      saturation,
     ]
   );
 
