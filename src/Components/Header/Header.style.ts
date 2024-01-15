@@ -4,7 +4,7 @@ const HeaderStyle = styled.nav`
   color: ${(props) => props.theme.primary};
   display: flex;
   align-items: center;
-  grid-column-start: 2;
+  /* grid-column-start: 2; */
   grid-column-end: 17;
   grid-row-start: 1;
   padding: 0 2.5%;

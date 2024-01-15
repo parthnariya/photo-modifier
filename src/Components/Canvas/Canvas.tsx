@@ -20,7 +20,7 @@ const Canvas = () => {
     scaleValue,
     zoomLevel,
   } = useAppSelector((state: RootState) => state.image);
-
+  const { showToolbar } = useAppSelector((state) => state.toolbar);
   const dispatch = useAppDispatch();
 
   const drawCanvas = useCallback(
@@ -44,6 +44,7 @@ const Canvas = () => {
       if (canvasRef.current) {
         const canvasNode = canvasRef.current;
         const canvasCtx = canvasNode.getContext("2d");
+
         if (canvasWrapperDivRef.current) {
           dispatch(
             setCanvasDimensions({
@@ -83,9 +84,12 @@ const Canvas = () => {
 
       img.onload = () => drawCanvas(img);
     }
-  }, [image, drawCanvas]);
+  }, [image, drawCanvas, canvasWrapperDivRef.current?.clientWidth]);
   return (
-    <CanvasStyle ref={canvasWrapperDivRef}>
+    <CanvasStyle
+      ref={canvasWrapperDivRef}
+      style={{ gridColumnStart: showToolbar ? "5" : "2" }}
+    >
       <div
         className="canvas-container"
         style={{

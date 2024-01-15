@@ -1,5 +1,5 @@
 import AppStyle from "./App.style";
-import { Canvas, Header, Sidebar } from "./Components";
+import { Canvas, Header, Sidebar, Toolbar } from "./Components";
 import GlobalStyle from "./styles/GlobalStyle";
 function App() {
   return (
@@ -8,6 +8,7 @@ function App() {
       <AppStyle>
         <Header />
         <Sidebar />
+        <Toolbar />
         <Canvas />
       </AppStyle>
     </>
