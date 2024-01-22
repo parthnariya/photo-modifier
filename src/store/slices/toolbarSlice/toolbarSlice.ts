@@ -13,14 +13,15 @@ const toolbarSlice = createSlice({
       state,
       { payload }: PayloadAction<ToggleToolBarPayloadType>
     ) => {
-      if (state.showToolbar && !payload.editingMode) {
+      if (state.showToolbar) {
         state.showToolbar = false;
+        if (payload.editingMode) {
+          state.editingMode = payload.editingMode;
+          state.showToolbar = true;
+        }
       } else if (!state.showToolbar && payload.editingMode) {
         state.editingMode = payload.editingMode;
         state.showToolbar = true;
-      } else {
-        state.showToolbar = false;
-        state.editingMode = payload.editingMode;
       }
     },
   },
