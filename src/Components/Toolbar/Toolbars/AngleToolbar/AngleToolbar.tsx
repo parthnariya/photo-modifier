@@ -9,6 +9,8 @@ import {
 } from "../../../../hooks/useAppDispatch";
 import {
   changeAngle,
+  flipX,
+  flipY,
   rotateLeft,
   rotateRight,
 } from "../../../../store/slices/angleSlice/angleSlice";
@@ -19,11 +21,11 @@ const AngleToolbar = () => {
   return (
     <AngleToolbarStyle>
       <div className="container">
-        <div className="option">
+        <div className="option" onClick={() => dispatch(flipX())}>
           <FlipXIcon />
           <p> Flip X</p>
         </div>
-        <div className="option">
+        <div className="option" onClick={() => dispatch(flipY())}>
           <FlipYIcon />
           <p> Flip Y</p>
         </div>

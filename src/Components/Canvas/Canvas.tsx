@@ -24,6 +24,7 @@ const Canvas = () => {
   const { showToolbar } = useAppSelector((state) => state.toolbar);
   const { blur, brightness, contrast, saturation, hueRotate, invert } =
     useAppSelector((state) => state.effect);
+  const { angle, flipX, flipY } = useAppSelector((state) => state.angle);
   const dispatch = useAppDispatch();
 
   const drawCanvas = useCallback(
@@ -68,6 +69,21 @@ const Canvas = () => {
             invert,
             saturation
           );
+          if (flipX) {
+            canvasCtx.translate(canvasNode.width, 0);
+            canvasCtx.scale(-1, 1);
+          }
+          if (flipY) {
+            canvasCtx.translate(0, canvasNode.height);
+            canvasCtx.scale(1, -1);
+          }
+          if (angle !== 0) {
+            
+            canvasCtx.translate(canvasNode.width / 2, canvasNode.height / 2);
+            canvasCtx.rotate((angle * Math.PI) / 180);
+
+            canvasCtx.translate(-canvasNode.width / 2, -canvasNode.height / 2);
+          }
           canvasCtx.drawImage(
             img,
             0,
@@ -91,6 +107,9 @@ const Canvas = () => {
       hueRotate,
       invert,
       saturation,
+      flipX,
+      flipY,
+      angle,
     ]
   );
 

@@ -46,5 +46,6 @@ const angleSlice = createSlice({
     },
   },
 });
-export const { changeAngle, rotateLeft, rotateRight } = angleSlice.actions;
+export const { changeAngle, rotateLeft, rotateRight, flipX, flipY } =
+  angleSlice.actions;
 export default angleSlice.reducer;
