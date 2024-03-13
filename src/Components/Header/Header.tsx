@@ -1,11 +1,14 @@
+import { useAppSelector } from "../../hooks/useAppDispatch";
 import HeaderStyle from "./Header.style";
 import ImageHandler from "./ImageHandler/ImageHandler";
 import RevisionHistory from "./RevisionHistory/RevisionHistory";
 import ZoomControls from "./ZoomControls/ZoomControls";
 
 const Header = () => {
+  const { image } = useAppSelector((state) => state.image);
+  const { showToolbar } = useAppSelector((state) => state.toolbar);
   return (
-    <HeaderStyle>
+    <HeaderStyle style={{ gridColumnStart: showToolbar ? "5" : "2" }}>
       <div className="items">
         <div className="item_groups">
           <div className="item">
@@ -16,9 +19,7 @@ const Header = () => {
           </div>
         </div>
         <div className="item_groups">
-          <div className="item">
-            <ZoomControls />
-          </div>
+          <div className="item">{image && <ZoomControls />}</div>
         </div>
         <div className="item_groups">
           <div className="item">
