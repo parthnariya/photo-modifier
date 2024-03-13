@@ -3,6 +3,7 @@ import CanvasStyle from "./Canvas.style";
 import { RootState } from "../../store/store";
 import { useAppDispatch, useAppSelector } from "../../hooks/useAppDispatch";
 import {
+  downloadImage,
   setCanvasDimensions,
   setImageDimensions,
   setScaleValue,
@@ -20,6 +21,7 @@ const Canvas = () => {
     canvasContainerWidth,
     scaleValue,
     zoomLevel,
+    signalToDownloadFlag,
   } = useAppSelector((state: RootState) => state.image);
   const { showToolbar } = useAppSelector((state) => state.toolbar);
   const { blur, brightness, contrast, saturation, hueRotate, invert } =
@@ -78,7 +80,6 @@ const Canvas = () => {
             canvasCtx.scale(1, -1);
           }
           if (angle !== 0) {
-            
             canvasCtx.translate(canvasNode.width / 2, canvasNode.height / 2);
             canvasCtx.rotate((angle * Math.PI) / 180);
 
@@ -121,6 +122,14 @@ const Canvas = () => {
       img.onload = () => drawCanvas(img);
     }
   }, [image, drawCanvas, canvasWrapperDivRef.current?.clientWidth]);
+
+  useEffect(() => {
+    if (canvasRef.current) {
+      const dataURl = canvasRef.current.toDataURL();
+      dispatch(downloadImage({ dataURl }));
+    }
+  }, [signalToDownloadFlag, dispatch]);
+
   return (
     <CanvasStyle
       ref={canvasWrapperDivRef}

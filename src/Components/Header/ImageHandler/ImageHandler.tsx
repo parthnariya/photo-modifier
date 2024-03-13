@@ -3,6 +3,7 @@ import DownloadIcon from "../../../assets/icons/save.svg?react";
 import UploadIcon from "../../../assets/icons/upload.svg?react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/useAppDispatch";
 import {
+  enableDownloadSignal,
   loadImage,
   resetCanvas,
 } from "../../../store/slices/ImageSlice/imageSlice";
@@ -33,6 +34,11 @@ const ImageHandler = ({ type }: ImageHandlerType) => {
       dispatch(loadImage(imageBase64));
     }
   };
+
+  const downloadImageHandler = () => {
+    dispatch(enableDownloadSignal());
+  };
+
   return (
     <>
       {type === "upload" ? (
@@ -48,7 +54,7 @@ const ImageHandler = ({ type }: ImageHandlerType) => {
           />
         </>
       ) : (
-        <DownloadIcon />
+        <DownloadIcon onClick={downloadImageHandler} />
       )}
     </>
   );
