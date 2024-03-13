@@ -7,6 +7,7 @@ export type InitialStateImageSlice = {
   zoomLevel: number;
   canvasContainerWidth: number | null;
   canvasContainerHeight: number | null;
+  signalToDownloadFlag: boolean;
 };
 
 export type SetImageDimensionsPayloadType = {
@@ -23,3 +24,7 @@ export type SetScaleValuePayloadType = Pick<
   InitialStateImageSlice,
   "scaleValue"
 >;
+
+export type DownloadImagePayloadType = {
+  dataURl: string;
+};

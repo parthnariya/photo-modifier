@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
+  DownloadImagePayloadType,
   InitialStateImageSlice,
   SetCanvasDimensionsPayloadType,
   SetImageDimensionsPayloadType,
@@ -14,6 +15,7 @@ const initialState: InitialStateImageSlice = {
   zoomLevel: 1,
   canvasContainerWidth: null,
   canvasContainerHeight: null,
+  signalToDownloadFlag: false,
 };
 const imageSlice = createSlice({
   name: "imageSlice",
@@ -69,6 +71,31 @@ const imageSlice = createSlice({
 
     /* reducer to reset canvas */
     resetCanvas: () => initialState,
+
+    /* download image */
+    downloadImage: (
+      state,
+      { payload }: PayloadAction<DownloadImagePayloadType>
+    ) => {
+      if (state.signalToDownloadFlag) {
+        const link = document.createElement("a");
+        link.download = "EditedImage.jpg";
+        link.href = payload.dataURl;
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        link.remove();
+
+        state.signalToDownloadFlag = false;
+      }
+    },
+
+    /* reducer to signal download image */
+
+    enableDownloadSignal: (state) => {
+      state.signalToDownloadFlag = true;
+    },
   },
 });
 export const {
@@ -79,5 +106,7 @@ export const {
   resetCanvas,
   increaseZoom,
   decreaseZoom,
+  downloadImage,
+  enableDownloadSignal,
 } = imageSlice.actions;
 export default imageSlice.reducer;
